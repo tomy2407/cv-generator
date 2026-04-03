@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CV Generator Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f0e0d;--ink2:#3a3835;--ink3:#7a7672;
+  --cream:#faf8f4;--cream2:#f2efe9;--cream3:#e8e4dc;
+  --accent:#c8622a;--accent2:#e8845a;
+  --white:#ffffff;--radius:12px;
+  --shadow:0 2px 20px rgba(15,14,13,0.08);
+  --green:#2a7a4b;--red:#b03030;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6}
+
+/* NAV */
+nav{background:var(--ink);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-logo{font-family:'DM Serif Display',serif;color:var(--cream);font-size:1.2rem}
+.nav-logo span{color:var(--accent2)}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{background:none;border:none;color:#b8b5b0;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .15s}
+.nav-tab:hover{color:var(--cream);background:rgba(255,255,255,0.08)}
+.nav-tab.active{color:var(--cream);background:rgba(255,255,255,0.12)}
+
+/* PAGES */
+.page{display:none;padding:2rem 1.5rem;max-width:1100px;margin:0 auto}
+.page.active{display:block}
+
+/* HERO */
+.hero{background:var(--ink);color:var(--cream);padding:3rem 2rem 2.5rem;text-align:center;margin-bottom:0}
+.hero-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:4px 14px;border-radius:999px;margin-bottom:1rem}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,4vw,3rem);line-height:1.1;margin-bottom:.75rem}
+.hero h1 span{color:var(--accent2)}
+.hero p{font-size:.95rem;color:#b8b5b0;max-width:440px;margin:0 auto}
+
+/* LAYOUT */
+.app-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;margin-top:2rem}
+@media(max-width:768px){.app-grid{grid-template-columns:1fr}}
+
+/* CARD */
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem}
+.card+.card{margin-top:1.25rem}
+.card-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--cream3)}
+
+/* FORM */
+.field{margin-bottom:12px}
+label{display:block;font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:4px;letter-spacing:.02em}
+input,textarea,select{width:100%;padding:8px 12px;border:1.5px solid var(--cream3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--cream);transition:border-color .15s;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);background:#fff}
+textarea{resize:vertical;min-height:70px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* SECTION HEADER */
+.sec-header{display:flex;justify-content:space-between;align-items:center;margin:1.25rem 0 .6rem}
+.sec-label{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.add-btn{font-size:12px;font-weight:500;color:var(--accent);background:none;border:1.5px solid var(--accent);border-radius:6px;padding:4px 11px;cursor:pointer;transition:background .15s}
+.add-btn:hover{background:#fff0e8}
+
+/* ENTRY */
+.entry{background:var(--cream);border:1px solid var(--cream3);border-radius:8px;padding:12px;margin-bottom:8px;position:relative}
+.rm-btn{position:absolute;top:9px;right:11px;font-size:17px;color:var(--ink3);background:none;border:none;cursor:pointer;line-height:1}
+.rm-btn:hover{color:#c0392b}
+
+/* BUTTONS */
+.gen-btn{width:100%;padding:13px;margin-top:1.25rem;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s}
+.gen-btn:hover{background:#b5531f}
+.gen-btn:active{transform:scale(.98)}
+.gen-btn:disabled{background:var(--cream3);color:var(--ink3);cursor:not-allowed}
+.status-msg{text-align:center;font-size:13px;color:var(--ink3);margin-top:8px;min-height:18px}
+
+/* PREVIEW */
+.preview-panel{position:sticky;top:1.5rem}
+.preview-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
+.preview-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.dl-btn{padding:7px 16px;background:var(--ink);color:var(--cream);border:none;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;display:none;transition:background .15s}
+.dl-btn.show{display:inline-block}
+.dl-btn:hover{background:var(--ink2)}
+
+/* CV PREVIEW */
+#cv-preview{background:#fff;border-radius:8px;border:1px solid var(--cream3);padding:1.75rem 2rem;min-height:380px;font-size:12.5px;color:#111;line-height:1.55}
+.cv-name{font-size:21px;font-weight:700;color:#0a0a0a;letter-spacing:-.02em}
+.cv-title{font-size:13px;color:var(--accent);font-weight:500;margin:2px 0 5px}
+.cv-contact{font-size:11px;color:#555;padding-bottom:10px;border-bottom:2px solid #111;margin-bottom:12px}
+.cv-sec{margin-top:12px}
+.cv-sec-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid #ccc;padding-bottom:2px;margin-bottom:7px}
+.cv-entry{margin-bottom:8px}
+.cv-eh{display:flex;justify-content:space-between;font-weight:600;font-size:12px}
+.cv-es{font-size:11px;color:#555;font-style:italic;margin:1px 0 2px}
+.cv-ed{font-size:11.5px;color:#333}
+.cv-summary,.cv-skills{font-size:11.5px;color:#333}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;color:var(--ink3);text-align:center;gap:8px}
+.empty-icon{font-size:32px;opacity:.3}
+.empty-state p{font-size:13px}
+
+/* DASHBOARD */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem}
+.stat-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.25rem;text-align:center}
+.stat-num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'DM Serif Display',serif}
+.stat-label{font-size:12px;color:var(--ink3);margin-top:2px}
+.cv-list{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.cv-list-header{padding:1rem 1.25rem;border-bottom:1px solid var(--cream3);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.cv-row{display:flex;align-items:center;padding:14px 1.25rem;border-bottom:.5px solid var(--cream3);gap:1rem;cursor:pointer;transition:background .12s}
+.cv-row:hover{background:var(--cream)}
+.cv-row:last-child{border-bottom:none}
+.cv-row-name{font-weight:600;font-size:14px;flex:1}
+.cv-row-poste{font-size:13px;color:var(--ink3);flex:1}
+.cv-row-date{font-size:11px;color:var(--ink3);white-space:nowrap}
+.cv-row-del{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:16px;padding:4px;border-radius:4px;transition:color .12s}
+.cv-row-del:hover{color:var(--red)}
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--cream2);color:var(--ink3)}
+.no-data{text-align:center;padding:3rem;color:var(--ink3);font-size:14px}
+
+/* LOADER */
+.loader{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:7px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">CV<span>Gen</span> Pro</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('create')">Créer un CV</button>
+    <button class="nav-tab" onclick="showPage('dashboard')">Dashboard</button>
+  </div>
+</nav>
+
+<!-- ══ PAGE : CRÉER ══════════════════════════════════════════════════════ -->
+<div id="page-create" class="page active">
+  <div class="hero">
+    <span class="hero-badge">✦ IA + Base de données</span>
+    <h1>Génère ton CV <span>ATS-Ready</span></h1>
+    <p>L'IA rédige, le serveur sauvegarde, tu télécharges le PDF.</p>
+  </div>
+
+  <div class="app-grid">
+    <!-- FORM -->
+    <div>
+      <div class="card">
+        <div class="card-title">Informations personnelles</div>
+        <div class="grid2">
+          <div class="field"><label>Prénom & Nom *</label><input id="nom" placeholder="Amine Benali"/></div>
+          <div class="field"><label>Poste visé *</label><input id="poste" placeholder="Développeur Web Junior"/></div>
+          <div class="field"><label>Email</label><input id="email" placeholder="email@exemple.com"/></div>
+          <div class="field"><label>Téléphone</label><input id="tel" placeholder="+212 6XX XXX XXX"/></div>
+          <div class="field"><label>Ville / Pays</label><input id="ville" placeholder="Rabat, Maroc"/></div>
+          <div class="field"><label>LinkedIn / Portfolio</label><input id="lien" placeholder="linkedin.com/in/..."/></div>
+        </div>
+        <div class="field"><label>Résumé professionnel</label><textarea id="resume" placeholder="Ex : Étudiant en informatique passionné par le développement web..."></textarea></div>
+      </div>
+
+      <div class="card">
+        <div class="sec-header"><span class="sec-label">Formations</span><button class="add-btn" onclick="addFormation()">+ Ajouter</button></div>
+        <div id="formations-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="sec-header"><span class="sec-label">Expériences</span><button class="add-btn" onclick="addExperience()">+ Ajouter</button></div>
+        <div id="experiences-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Compétences & Langues</div>
+        <div class="field"><label>Compétences</label><textarea id="competences" placeholder="Python, HTML/CSS, Excel, Gestion de projet..."></textarea></div>
+        <div class="field"><label>Langues</label><input id="langues" placeholder="Arabe (natif), Français (C1), Anglais (B2)"/></div>
+      </div>
+
+      <button class="gen-btn" id="gen-btn" onclick="genererCV()">Générer & Sauvegarder mon CV</button>
+      <p class="status-msg" id="status"></p>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview-panel">
+      <div class="preview-header">
+        <span class="preview-title">Aperçu du CV</span>
+        <button class="dl-btn" id="dl-btn" onclick="telechargerPDF()">⬇ Télécharger PDF</button>
+      </div>
+      <div class="card" style="padding:0">
+        <div id="cv-preview">
+          <div class="empty-state">
+            <div class="empty-icon">📄</div>
+            <p>Ton CV apparaîtra ici<br>après génération</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE : DASHBOARD ══════════════════════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+  <div style="margin-top:1.5rem">
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">CVs générés au total</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-today">—</div><div class="stat-label">CVs créés aujourd'hui</div></div>
+    </div>
+
+    <div class="cv-list">
+      <div class="cv-list-header">Tous les CVs sauvegardés</div>
+      <div id="cv-list-body"><div class="no-data">Chargement...</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── ÉTAT GLOBAL ──────────────────────────────────────────────────────────
+let cvData = null;
+
+// ── NAVIGATION ───────────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'dashboard') chargerDashboard();
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────
+addFormation();
+addExperience();
+
+// ── FORMATIONS ───────────────────────────────────────────────────────────
+function addFormation() {
+  const list = document.getElementById('formations-list');
+  const id = 'f' + Date.now();
+  const div = document.createElement('div');
+  div.className = 'entry'; div.id = id;
+  div.innerHTML = `
+    <button class="rm-btn" onclick="rm('${id}')">×</button>
+    <div class="grid2">
+      <div class="field"><label>Diplôme</label><input class="f-diplome" placeholder="Licence Informatique"/></div>
+      <div class="field"><label>Établissement</label><input class="f-etablissement" placeholder="Université Mohammed V"/></div>
+      <div class="field"><label>Début</label><input class="f-debut" placeholder="2021"/></div>
+      <div class="field"><label>Fin</label><input class="f-fin" placeholder="2024 / En cours"/></div>
+    </div>`;
+  list.appendChild(div);
+}
+
+// ── EXPÉRIENCES ──────────────────────────────────────────────────────────
+function addExperience() {
+  const list = document.getElementById('experiences-list');
+  const id = 'e' + Date.now();
+  const div = document.createElement('div');
+  div.className = 'entry'; div.id = id;
+  div.innerHTML = `
+    <button class="rm-btn" onclick="rm('${id}')">×</button>
+    <div class="grid2">
+      <div class="field"><label>Poste</label><input class="e-poste" placeholder="Stagiaire Développeur"/></div>
+      <div class="field"><label>Entreprise</label><input class="e-entreprise" placeholder="Maroc Telecom"/></div>
+      <div class="field"><label>Début</label><input class="e-debut" placeholder="Juin 2023"/></div>
+      <div class="field"><label>Fin</label><input class="e-fin" placeholder="Août 2023"/></div>
+    </div>
+    <div class="field" style="margin-top:6px;margin-bottom:0"><label>Description</label><textarea class="e-desc" placeholder="Missions réalisées, résultats obtenus..."></textarea></div>`;
+  list.appendChild(div);
+}
+
+function rm(id) { document.getElementById(id)?.remove(); }
+
+// ── COLLECTER LES DONNÉES ────────────────────────────────────────────────
+function collectData() {
+  const formations = [];
+  document.querySelectorAll('#formations-list .entry').forEach(el => {
+    const diplome = el.querySelector('.f-diplome').value.trim();
+    if (diplome) formations.push({
+      diplome,
+      etablissement: el.querySelector('.f-etablissement').value.trim(),
+      debut: el.querySelector('.f-debut').value.trim(),
+      fin: el.querySelector('.f-fin').value.trim()
+    });
+  });
+
+  const experiences = [];
+  document.querySelectorAll('#experiences-list .entry').forEach(el => {
+    const poste = el.querySelector('.e-poste').value.trim();
+    if (poste) experiences.push({
+      poste,
+      entreprise: el.querySelector('.e-entreprise').value.trim(),
+      debut: el.querySelector('.e-debut').value.trim(),
+      fin: el.querySelector('.e-fin').value.trim(),
+      description: el.querySelector('.e-desc').value.trim()
+    });
+  });
+
+  return {
+    nom: document.getElementById('nom').value.trim(),
+    poste: document.getElementById('poste').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    telephone: document.getElementById('tel').value.trim(),
+    ville: document.getElementById('ville').value.trim(),
+    lien: document.getElementById('lien').value.trim(),
+    resume: document.getElementById('resume').value.trim(),
+    competences: document.getElementById('competences').value.trim(),
+    langues: document.getElementById('langues').value.trim(),
+    formations, experiences
+  };
+}
+
+// ── GÉNÉRER CV ───────────────────────────────────────────────────────────
+async function genererCV() {
+  const data = collectData();
+  if (!data.nom || !data.poste) {
+    document.getElementById('status').textContent = '⚠ Merci de remplir le nom et le poste visé.';
+    return;
+  }
+
+  const btn = document.getElementById('gen-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span>L\'IA génère ton CV...';
+  document.getElementById('status').textContent = '';
+
+  try {
+    const res = await fetch('/api/cv/generer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.erreur || 'Erreur serveur');
+
+    cvData = result.cv;
+    renderPreview(cvData);
+    document.getElementById('dl-btn').classList.add('show');
+    document.getElementById('status').textContent = `✓ CV sauvegardé en base de données (ID #${result.id})`;
+  } catch (err) {
+    document.getElementById('status').textContent = '✗ ' + err.message;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = 'Régénérer & Sauvegarder';
+}
+
+// ── APERÇU ───────────────────────────────────────────────────────────────
+function renderPreview(cv) {
+  const el = document.getElementById('cv-preview');
+  el.style.padding = '1.75rem 2rem';
+  let h = `
+    <div class="cv-name">${cv.nom || ''}</div>
+    <div class="cv-title">${cv.poste || ''}</div>
+    <div class="cv-contact">${cv.contact || ''}</div>
+  `;
+  if (cv.resume) h += `<div class="cv-sec"><div class="cv-sec-title">Profil</div><div class="cv-summary">${cv.resume}</div></div>`;
+  if (cv.experiences?.length) {
+    h += `<div class="cv-sec"><div class="cv-sec-title">Expériences</div>`;
+    cv.experiences.forEach(e => {
+      h += `<div class="cv-entry"><div class="cv-eh"><span>${e.poste}</span><span>${e.periode||''}</span></div><div class="cv-es">${e.entreprise||''}</div><div class="cv-ed">${e.description||''}</div></div>`;
+    });
+    h += `</div>`;
+  }
+  if (cv.formations?.length) {
+    h += `<div class="cv-sec"><div class="cv-sec-title">Formation</div>`;
+    cv.formations.forEach(f => {
+      h += `<div class="cv-entry"><div class="cv-eh"><span>${f.titre}</span><span>${f.periode||''}</span></div><div class="cv-es">${f.etablissement||''}</div>${f.detail?`<div class="cv-ed">${f.detail}</div>`:''}</div>`;
+    });
+    h += `</div>`;
+  }
+  if (cv.competences) h += `<div class="cv-sec"><div class="cv-sec-title">Compétences</div><div class="cv-skills">${cv.competences}</div></div>`;
+  if (cv.langues) h += `<div class="cv-sec"><div class="cv-sec-title">Langues</div><div class="cv-skills">${cv.langues}</div></div>`;
+  el.innerHTML = h;
+}
+
+// ── TÉLÉCHARGER PDF ───────────────────────────────────────────────────────
+function telechargerPDF() {
+  if (!cvData) return;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const mL = 20, mR = 20, mT = 20, cW = 170;
+  let y = mT;
+
+  function checkPage(n=8) { if (y+n>277) { doc.addPage(); y=mT; } }
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(10,10,10);
+  doc.text(cvData.nom||'', mL, y); y+=7;
+  doc.setFont('helvetica','normal'); doc.setFontSize(12); doc.setTextColor(200,98,42);
+  doc.text(cvData.poste||'', mL, y); y+=6;
+  doc.setFontSize(9); doc.setTextColor(80,80,80);
+  doc.text(cvData.contact||'', mL, y); y+=2;
+  doc.setDrawColor(10,10,10); doc.setLineWidth(.6);
+  doc.line(mL, y+2, 210-mR, y+2); y+=7;
+
+  function secTitle(t) {
+    checkPage(10);
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(10,10,10);
+    doc.text(t.toUpperCase(), mL, y);
+    doc.setDrawColor(180,180,180); doc.setLineWidth(.3);
+    doc.line(mL, y+1.5, 210-mR, y+1.5); y+=6;
+  }
+  function bodyTxt(t,c=[50,50,50]) {
+    doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...c);
+    const lines = doc.splitTextToSize(t||'', cW);
+    checkPage(lines.length*5);
+    doc.text(lines, mL, y); y+=lines.length*5;
+  }
+
+  if (cvData.resume) { secTitle('Profil professionnel'); bodyTxt(cvData.resume); y+=3; }
+  if (cvData.experiences?.length) {
+    secTitle('Expériences professionnelles');
+    cvData.experiences.forEach(e => {
+      checkPage(12);
+      doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(10,10,10);
+      doc.text(e.poste||'', mL, y);
+      if (e.periode) { const pw=doc.getTextWidth(e.periode); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(100,100,100); doc.text(e.periode, 210-mR-pw, y); }
+      y+=4.5;
+      if (e.entreprise) { doc.setFont('helvetica','italic'); doc.setFontSize(9); doc.setTextColor(100,100,100); doc.text(e.entreprise, mL, y); y+=4; }
+      if (e.description) bodyTxt(e.description); y+=3;
+    });
+  }
+  if (cvData.formations?.length) {
+    secTitle('Formation');
+    cvData.formations.forEach(f => {
+      checkPage(10);
+      doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(10,10,10);
+      doc.text(f.titre||'', mL, y);
+      if (f.periode) { const pw=doc.getTextWidth(f.periode); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(100,100,100); doc.text(f.periode, 210-mR-pw, y); }
+      y+=4.5;
+      if (f.etablissement) { doc.setFont('helvetica','italic'); doc.setFontSize(9); doc.setTextColor(100,100,100); doc.text(f.etablissement, mL, y); y+=4; }
+      if (f.detail) bodyTxt(f.detail); y+=2;
+    });
+  }
+  if (cvData.competences) { secTitle('Compétences'); bodyTxt(cvData.competences); y+=3; }
+  if (cvData.langues) { secTitle('Langues'); bodyTxt(cvData.langues); }
+
+  doc.save((cvData.nom||'CV').replace(/\s+/g,'_')+'_ATS.pdf');
+}
+
+// ── DASHBOARD ────────────────────────────────────────────────────────────
+async function chargerDashboard() {
+  try {
+    const [statsRes, listRes] = await Promise.all([
+      fetch('/api/cv/stats'),
+      fetch('/api/cv')
+    ]);
+    const stats = await statsRes.json();
+    const cvs   = await listRes.json();
+
+    document.getElementById('stat-total').textContent = stats.total ?? '—';
+    document.getElementById('stat-today').textContent = stats.aujourdhui ?? '—';
+
+    const body = document.getElementById('cv-list-body');
+    if (!cvs.length) {
+      body.innerHTML = '<div class="no-data">Aucun CV encore. Crée ton premier !</div>';
+      return;
+    }
+
+    body.innerHTML = cvs.map(cv => `
+      <div class="cv-row" onclick="voirCV(${cv.id})">
+        <div class="cv-row-name">${cv.nom}</div>
+        <div class="cv-row-poste">${cv.poste}</div>
+        <div class="cv-row-date">${new Date(cv.cree_le).toLocaleDateString('fr-FR')}</div>
+        <button class="cv-row-del" onclick="supprimerCV(event,${cv.id})" title="Supprimer">🗑</button>
+      </div>
+    `).join('');
+  } catch (err) {
+    document.getElementById('cv-list-body').innerHTML = '<div class="no-data">Erreur de connexion au serveur.</div>';
+  }
+}
+
+async function voirCV(id) {
+  const res = await fetch('/api/cv/' + id);
+  const cv  = await res.json();
+  if (cv.cv_genere) {
+    cvData = cv.cv_genere;
+    showPage('create');
+    document.querySelectorAll('.nav-tab')[0].classList.add('active');
+    document.querySelectorAll('.nav-tab')[1].classList.remove('active');
+    renderPreview(cvData);
+    document.getElementById('dl-btn').classList.add('show');
+    document.getElementById('status').textContent = `Aperçu du CV #${id} — ${cv.nom}`;
+  }
+}
+
+async function supprimerCV(e, id) {
+  e.stopPropagation();
+  if (!confirm('Supprimer ce CV ?')) return;
+  await fetch('/api/cv/' + id, { method: 'DELETE' });
+  chargerDashboard();
+}
+</script>
+</body>
+</html>
