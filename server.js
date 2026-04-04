@@ -6,6 +6,7 @@ const cors    = require('cors');
 const path    = require('path');
 
 const cvRoutes = require('./routes/cv');
+const analyseRoutes = require('./routes/analyse');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ app.use(express.static('public'));        // Sert les fichiers HTML/CSS/JS du fr
 
 // ─── ROUTES API ───────────────────────────────────────────────────────────
 app.use('/api/cv', cvRoutes);
+app.use('/api/analyse', analyseRoutes);
 
 // ─── ROUTE FALLBACK ───────────────────────────────────────────────────────
 // Toutes les autres routes renvoient le frontend (SPA)
