@@ -6,6 +6,7 @@ const cors    = require('cors');
 const path    = require('path');
 
 const cvRoutes = require('./routes/cv');
+const authRoutes = require('./routes/auth');
 const analyseRoutes = require('./routes/analyse');
 
 const app  = express();
@@ -18,6 +19,7 @@ app.use(express.static('public'));        // Sert les fichiers HTML/CSS/JS du fr
 
 // ─── ROUTES API ───────────────────────────────────────────────────────────
 app.use('/api/cv', cvRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/analyse', analyseRoutes);
 
 // ─── ROUTE FALLBACK ───────────────────────────────────────────────────────

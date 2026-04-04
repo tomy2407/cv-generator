@@ -14,12 +14,37 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);f
 nav{background:var(--ink);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px}
 .nav-logo{font-family:'DM Serif Display',serif;color:var(--cream);font-size:1.2rem}
 .nav-logo span{color:var(--accent2)}
-.nav-tabs{display:flex;gap:4px}
+.nav-tabs{display:flex;gap:4px;align-items:center}
 .nav-tab{background:none;border:none;color:#b8b5b0;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .15s}
 .nav-tab:hover{color:var(--cream);background:rgba(255,255,255,0.08)}
 .nav-tab.active{color:var(--cream);background:rgba(255,255,255,0.12)}
+.nav-user{font-size:13px;color:#b8b5b0;display:flex;align-items:center;gap:10px}
+.nav-user span{color:var(--accent2);font-weight:500}
+.logout-btn{background:none;border:1px solid rgba(255,255,255,.2);color:#b8b5b0;font-family:'DM Sans',sans-serif;font-size:12px;padding:4px 12px;border-radius:6px;cursor:pointer}
+.logout-btn:hover{background:rgba(255,255,255,.08);color:#fff}
 .page{display:none;padding:2rem 1.5rem;max-width:1100px;margin:0 auto}
 .page.active{display:block}
+
+/* ── AUTH PAGE ── */
+#page-auth{max-width:440px;padding-top:4rem}
+.auth-logo{text-align:center;margin-bottom:2rem}
+.auth-logo h1{font-family:'DM Serif Display',serif;font-size:2rem;color:var(--ink)}
+.auth-logo h1 span{color:var(--accent)}
+.auth-logo p{font-size:14px;color:var(--ink3);margin-top:4px}
+.auth-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:2rem}
+.auth-tabs{display:flex;gap:0;margin-bottom:1.5rem;border:1.5px solid var(--cream3);border-radius:8px;overflow:hidden}
+.auth-tab{flex:1;padding:9px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;color:var(--ink3);transition:all .15s}
+.auth-tab.active{background:var(--accent);color:#fff}
+.auth-field{margin-bottom:14px}
+.auth-field label{display:block;font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:5px}
+.auth-field input{width:100%;padding:10px 13px;border:1.5px solid var(--cream3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--cream);outline:none;transition:border-color .15s}
+.auth-field input:focus{border-color:var(--accent);background:#fff}
+.auth-btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;margin-top:6px;transition:background .15s}
+.auth-btn:hover{background:#b5531f}
+.auth-btn:disabled{background:var(--cream3);color:var(--ink3);cursor:not-allowed}
+.auth-error{font-size:13px;color:var(--red);text-align:center;margin-top:10px;min-height:18px}
+.auth-success{font-size:13px;color:var(--green);text-align:center;margin-top:10px}
+
 .hero{background:var(--ink);color:var(--cream);padding:3rem 2rem 2.5rem;text-align:center}
 .hero-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:4px 14px;border-radius:999px;margin-bottom:1rem}
 .hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,4vw,3rem);line-height:1.1;margin-bottom:.75rem}
@@ -99,33 +124,27 @@ textarea{resize:vertical;min-height:70px}
 .probleme-item::before{content:"✗";color:#e05a3a;font-weight:700;flex-shrink:0}
 .amelioration-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink2);margin-bottom:6px}
 .amelioration-item::before{content:"✓";color:#2a7a4b;font-weight:700;flex-shrink:0}
-
-/* ── TEMPLATES ── */
 .templates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:4px}
-.template-card{border:2px solid var(--cream3);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s;background:var(--white);text-align:center}
+.template-card{border:2px solid var(--cream3);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s;background:var(--white);text-align:center;position:relative}
 .template-card:hover{border-color:var(--accent2);transform:translateY(-2px)}
 .template-card.selected{border-color:var(--accent);background:#fff8f5}
-.template-card.selected .template-check{display:flex}
 .template-preview{height:80px;border-radius:6px;margin-bottom:8px;overflow:hidden;position:relative}
 .template-name{font-size:12px;font-weight:600;color:var(--ink2)}
 .template-desc{font-size:10px;color:var(--ink3);margin-top:2px}
-.template-check{display:none;position:absolute;top:4px;right:4px;width:18px;height:18px;background:var(--accent);border-radius:50%;align-items:center;justify-content:center;color:#fff;font-size:10px}
-
-/* Template previews */
-.prev-classique{background:#fff;border:1px solid #ddd;display:flex;flex-direction:column;padding:6px}
+.template-check{display:none;position:absolute;top:6px;right:6px;width:18px;height:18px;background:var(--accent);border-radius:50%;align-items:center;justify-content:center;color:#fff;font-size:10px}
+.template-card.selected .template-check{display:flex}
+.prev-classique{background:#fff;border:1px solid #ddd;display:flex;flex-direction:column;padding:6px;height:100%}
 .prev-classique .ph{height:8px;background:#0f0e0d;border-radius:2px;margin-bottom:4px;width:60%}
 .prev-classique .pl{height:4px;background:#c8622a;border-radius:2px;margin-bottom:6px;width:40%}
 .prev-classique .pb{height:3px;background:#eee;border-radius:2px;margin-bottom:3px}
-
 .prev-moderne{background:#fff;display:flex;height:100%}
-.prev-moderne .sidebar{width:35%;background:#1a2b4a;height:100%;padding:6px}
+.prev-moderne .sidebar{width:35%;background:#1a2b4a;padding:6px}
 .prev-moderne .sidebar .sh{height:14px;width:14px;border-radius:50%;background:#fff;margin:0 auto 6px}
 .prev-moderne .sidebar .sl{height:3px;background:rgba(255,255,255,.4);border-radius:2px;margin-bottom:3px}
 .prev-moderne .content{flex:1;padding:6px}
 .prev-moderne .ch{height:6px;background:#1a2b4a;border-radius:2px;margin-bottom:4px;width:70%}
 .prev-moderne .cl{height:3px;background:#eee;border-radius:2px;margin-bottom:3px}
-
-.prev-minimaliste{background:#fff;padding:8px;display:flex;flex-direction:column}
+.prev-minimaliste{background:#fff;padding:8px;display:flex;flex-direction:column;height:100%}
 .prev-minimaliste .mh{height:10px;background:#111;border-radius:1px;margin-bottom:3px;width:55%}
 .prev-minimaliste .ms{height:3px;background:#999;border-radius:1px;margin-bottom:8px;width:35%}
 .prev-minimaliste .ml{height:2px;background:#f0f0f0;border-radius:1px;margin-bottom:4px}
@@ -133,17 +152,50 @@ textarea{resize:vertical;min-height:70px}
 </style>
 </head>
 <body>
+
 <nav>
   <div class="nav-logo">CV<span>Gen</span> Pro</div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('create',this)">Créer un CV</button>
-    <button class="nav-tab" onclick="showPage('analyse',this)">Optimiser mon CV</button>
-    <button class="nav-tab" onclick="showPage('dashboard',this)">Dashboard</button>
+  <div class="nav-tabs" id="nav-tabs">
+    <div class="nav-user" id="nav-user" style="display:none">
+      Bonjour, <span id="nav-nom"></span>
+      <button class="logout-btn" onclick="seDeconnecter()">Déconnexion</button>
+    </div>
   </div>
 </nav>
 
-<!-- PAGE CRÉER -->
-<div id="page-create" class="page active">
+<!-- ══ PAGE AUTH ══ -->
+<div id="page-auth" class="page active" style="max-width:440px;padding-top:4rem;margin:0 auto">
+  <div class="auth-logo">
+    <h1>CV<span>Gen</span> Pro</h1>
+    <p>Crée ton CV professionnel avec l'IA</p>
+  </div>
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-connexion" onclick="switchAuth('connexion')">Se connecter</button>
+      <button class="auth-tab" id="tab-inscription" onclick="switchAuth('inscription')">Créer un compte</button>
+    </div>
+
+    <!-- CONNEXION -->
+    <div id="form-connexion">
+      <div class="auth-field"><label>Email</label><input id="login-email" type="email" placeholder="ton@email.com"/></div>
+      <div class="auth-field"><label>Mot de passe</label><input id="login-password" type="password" placeholder="••••••"/></div>
+      <button class="auth-btn" id="login-btn" onclick="seConnecter()">Se connecter</button>
+      <p class="auth-error" id="login-error"></p>
+    </div>
+
+    <!-- INSCRIPTION -->
+    <div id="form-inscription" style="display:none">
+      <div class="auth-field"><label>Prénom & Nom</label><input id="reg-nom" placeholder="Amine Benali"/></div>
+      <div class="auth-field"><label>Email</label><input id="reg-email" type="email" placeholder="ton@email.com"/></div>
+      <div class="auth-field"><label>Mot de passe (min. 6 caractères)</label><input id="reg-password" type="password" placeholder="••••••"/></div>
+      <button class="auth-btn" id="reg-btn" onclick="sInscrire()">Créer mon compte</button>
+      <p class="auth-error" id="reg-error"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE CRÉER ══ -->
+<div id="page-create" class="page">
   <div class="hero">
     <span class="hero-badge">✦ IA + Base de données</span>
     <h1>Génère ton CV <span>ATS-Ready</span></h1>
@@ -151,48 +203,26 @@ textarea{resize:vertical;min-height:70px}
   </div>
   <div class="app-grid">
     <div>
-
-      <!-- CHOIX TEMPLATE -->
       <div class="card">
         <div class="card-title">1 — Choisis ton template</div>
         <div class="templates-grid">
           <div class="template-card selected" onclick="selectTemplate('classique',this)">
-            <div class="template-preview">
-              <div class="prev-classique">
-                <div class="ph"></div><div class="pl"></div>
-                <div class="pb"></div><div class="pb"></div><div class="pb"></div>
-              </div>
-              <div class="template-check">✓</div>
-            </div>
-            <div class="template-name">Classique</div>
-            <div class="template-desc">Sobre & élégant</div>
+            <div class="template-preview"><div class="prev-classique"><div class="ph"></div><div class="pl"></div><div class="pb"></div><div class="pb"></div></div></div>
+            <div class="template-check">✓</div>
+            <div class="template-name">Classique</div><div class="template-desc">Sobre & élégant</div>
           </div>
           <div class="template-card" onclick="selectTemplate('moderne',this)">
-            <div class="template-preview">
-              <div class="prev-moderne">
-                <div class="sidebar"><div class="sh"></div><div class="sl"></div><div class="sl"></div></div>
-                <div class="content"><div class="ch"></div><div class="cl"></div><div class="cl"></div></div>
-              </div>
-              <div class="template-check">✓</div>
-            </div>
-            <div class="template-name">Moderne</div>
-            <div class="template-desc">Barre latérale colorée</div>
+            <div class="template-preview"><div class="prev-moderne"><div class="sidebar"><div class="sh"></div><div class="sl"></div><div class="sl"></div></div><div class="content"><div class="ch"></div><div class="cl"></div><div class="cl"></div></div></div></div>
+            <div class="template-check">✓</div>
+            <div class="template-name">Moderne</div><div class="template-desc">Barre latérale</div>
           </div>
           <div class="template-card" onclick="selectTemplate('minimaliste',this)">
-            <div class="template-preview">
-              <div class="prev-minimaliste">
-                <div class="mh"></div><div class="ms"></div>
-                <div class="ml"></div><div class="mb"></div><div class="mb"></div>
-              </div>
-              <div class="template-check">✓</div>
-            </div>
-            <div class="template-name">Minimaliste</div>
-            <div class="template-desc">Ultra-clean</div>
+            <div class="template-preview"><div class="prev-minimaliste"><div class="mh"></div><div class="ms"></div><div class="ml"></div><div class="mb"></div></div></div>
+            <div class="template-check">✓</div>
+            <div class="template-name">Minimaliste</div><div class="template-desc">Ultra-clean</div>
           </div>
         </div>
       </div>
-
-      <!-- INFOS PERSONNELLES -->
       <div class="card">
         <div class="card-title">2 — Informations personnelles</div>
         <div class="grid2">
@@ -233,12 +263,12 @@ textarea{resize:vertical;min-height:70px}
   </div>
 </div>
 
-<!-- PAGE ANALYSER -->
+<!-- ══ PAGE ANALYSER ══ -->
 <div id="page-analyse" class="page">
   <div class="hero">
     <span class="hero-badge">✦ Analyse IA</span>
     <h1>Optimise ton CV <span>existant</span></h1>
-    <p>Upload ton CV, l'IA l'analyse et le réécrit en format ATS professionnel.</p>
+    <p>Upload ton CV, l'IA l'analyse et le réécrit en format ATS.</p>
   </div>
   <div class="app-grid" style="margin-top:2rem">
     <div>
@@ -255,14 +285,8 @@ textarea{resize:vertical;min-height:70px}
       </div>
       <div class="card" id="analyse-result" style="display:none;margin-top:1.25rem">
         <div class="card-title">Résultat de l'analyse</div>
-        <div class="score-bar">
-          <div class="score-label"><span>Score original</span><span id="score-original-val">—</span></div>
-          <div class="score-track"><div class="score-fill score-bad" id="score-original-bar" style="width:0%"></div></div>
-        </div>
-        <div class="score-bar">
-          <div class="score-label"><span>Score ATS optimisé</span><span id="score-ats-val">—</span></div>
-          <div class="score-track"><div class="score-fill score-good" id="score-ats-bar" style="width:0%"></div></div>
-        </div>
+        <div class="score-bar"><div class="score-label"><span>Score original</span><span id="score-original-val">—</span></div><div class="score-track"><div class="score-fill score-bad" id="score-original-bar" style="width:0%"></div></div></div>
+        <div class="score-bar"><div class="score-label"><span>Score ATS optimisé</span><span id="score-ats-val">—</span></div><div class="score-track"><div class="score-fill score-good" id="score-ats-bar" style="width:0%"></div></div></div>
         <div id="problemes-list" style="margin-top:1rem"></div>
       </div>
     </div>
@@ -278,15 +302,15 @@ textarea{resize:vertical;min-height:70px}
   </div>
 </div>
 
-<!-- PAGE DASHBOARD -->
+<!-- ══ PAGE DASHBOARD ══ -->
 <div id="page-dashboard" class="page">
   <div style="margin-top:1.5rem">
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">CVs générés au total</div></div>
-      <div class="stat-card"><div class="stat-num" id="stat-today">—</div><div class="stat-label">CVs créés aujourd'hui</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Mes CVs générés</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-today">—</div><div class="stat-label">Créés aujourd'hui</div></div>
     </div>
     <div class="cv-list">
-      <div class="cv-list-header">Tous les CVs sauvegardés</div>
+      <div class="cv-list-header">Mes CVs sauvegardés</div>
       <div id="cv-list-body"><div class="no-data">Chargement...</div></div>
     </div>
   </div>
@@ -294,6 +318,90 @@ textarea{resize:vertical;min-height:70px}
 
 <script>
 let cvData=null,cvAnalyseData=null,selectedFile=null,selectedTemplate='classique';
+let currentUser=null,authToken=null;
+
+// ── AUTH ──────────────────────────────────────────────────────────────────
+function switchAuth(mode){
+  document.getElementById('form-connexion').style.display=mode==='connexion'?'block':'none';
+  document.getElementById('form-inscription').style.display=mode==='inscription'?'block':'none';
+  document.getElementById('tab-connexion').classList.toggle('active',mode==='connexion');
+  document.getElementById('tab-inscription').classList.toggle('active',mode==='inscription');
+}
+
+async function seConnecter(){
+  const email=document.getElementById('login-email').value.trim();
+  const password=document.getElementById('login-password').value;
+  const btn=document.getElementById('login-btn');
+  btn.disabled=true;btn.textContent='Connexion...';
+  document.getElementById('login-error').textContent='';
+  try{
+    const res=await fetch('/api/auth/connexion',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.erreur);
+    connecterUtilisateur(data.token,data.user);
+  }catch(err){document.getElementById('login-error').textContent=err.message;}
+  btn.disabled=false;btn.textContent='Se connecter';
+}
+
+async function sInscrire(){
+  const nom=document.getElementById('reg-nom').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const password=document.getElementById('reg-password').value;
+  const btn=document.getElementById('reg-btn');
+  btn.disabled=true;btn.textContent='Création...';
+  document.getElementById('reg-error').textContent='';
+  try{
+    const res=await fetch('/api/auth/inscription',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nom,email,password})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.erreur);
+    connecterUtilisateur(data.token,data.user);
+  }catch(err){document.getElementById('reg-error').textContent=err.message;}
+  btn.disabled=false;btn.textContent='Créer mon compte';
+}
+
+function connecterUtilisateur(token,user){
+  authToken=token;currentUser=user;
+  localStorage.setItem('cvgen_token',token);
+  localStorage.setItem('cvgen_user',JSON.stringify(user));
+  afficherAppli();
+}
+
+function seDeconnecter(){
+  authToken=null;currentUser=null;
+  localStorage.removeItem('cvgen_token');
+  localStorage.removeItem('cvgen_user');
+  document.getElementById('nav-user').style.display='none';
+  document.getElementById('nav-tabs').innerHTML='<div class="nav-user" id="nav-user" style="display:none"><span id="nav-nom"></span><button class="logout-btn" onclick="seDeconnecter()">Déconnexion</button></div>';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-auth').classList.add('active');
+}
+
+function afficherAppli(){
+  document.getElementById('nav-user').style.display='flex';
+  document.getElementById('nav-nom').textContent=currentUser.nom;
+
+  // Ajoute les onglets de navigation
+  const navTabs=document.getElementById('nav-tabs');
+  navTabs.innerHTML=`
+    <button class="nav-tab active" onclick="showPage('create',this)">Créer un CV</button>
+    <button class="nav-tab" onclick="showPage('analyse',this)">Optimiser mon CV</button>
+    <button class="nav-tab" onclick="showPage('dashboard',this)">Dashboard</button>
+    <div class="nav-user" id="nav-user" style="display:flex;margin-left:8px">
+      Bonjour, <span id="nav-nom">${currentUser.nom}</span>
+      <button class="logout-btn" onclick="seDeconnecter()">Déconnexion</button>
+    </div>`;
+
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-create').classList.add('active');
+  addFormation();addExperience();
+}
+
+// Vérifie si déjà connecté au chargement
+window.addEventListener('load',()=>{
+  const token=localStorage.getItem('cvgen_token');
+  const user=JSON.parse(localStorage.getItem('cvgen_user')||'null');
+  if(token&&user){authToken=token;currentUser=user;afficherAppli();}
+});
 
 function showPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -305,16 +413,14 @@ function showPage(name,btn){
 
 function selectTemplate(name,card){
   selectedTemplate=name;
-  document.querySelectorAll('.template-card').forEach(c=>{c.classList.remove('selected');c.querySelector('.template-check').style.display='none';});
+  document.querySelectorAll('.template-card').forEach(c=>c.classList.remove('selected'));
   card.classList.add('selected');
-  card.querySelector('.template-check').style.display='flex';
   if(cvData)renderPreview(cvData,'cv-preview');
 }
 
-addFormation();addExperience();
-
 function addFormation(){
   const list=document.getElementById('formations-list');
+  if(!list)return;
   const id='f'+Date.now();const div=document.createElement('div');
   div.className='entry';div.id=id;
   div.innerHTML=`<button class="rm-btn" onclick="rm('${id}')">×</button><div class="grid2"><div class="field"><label>Diplôme</label><input class="f-diplome" placeholder="Licence Informatique"/></div><div class="field"><label>Établissement</label><input class="f-etablissement" placeholder="Université Mohammed V"/></div><div class="field"><label>Début</label><input class="f-debut" placeholder="2021"/></div><div class="field"><label>Fin</label><input class="f-fin" placeholder="2024"/></div></div>`;
@@ -323,6 +429,7 @@ function addFormation(){
 
 function addExperience(){
   const list=document.getElementById('experiences-list');
+  if(!list)return;
   const id='e'+Date.now();const div=document.createElement('div');
   div.className='entry';div.id=id;
   div.innerHTML=`<button class="rm-btn" onclick="rm('${id}')">×</button><div class="grid2"><div class="field"><label>Poste</label><input class="e-poste" placeholder="Stagiaire Développeur"/></div><div class="field"><label>Entreprise</label><input class="e-entreprise" placeholder="Maroc Telecom"/></div><div class="field"><label>Début</label><input class="e-debut" placeholder="Juin 2023"/></div><div class="field"><label>Fin</label><input class="e-fin" placeholder="Août 2023"/></div></div><div class="field" style="margin-top:6px;margin-bottom:0"><label>Description</label><textarea class="e-desc" placeholder="Missions réalisées..."></textarea></div>`;
@@ -344,11 +451,11 @@ async function genererCV(){
   if(!data.nom||!data.poste){document.getElementById('status').textContent='⚠ Merci de remplir le nom et le poste visé.';return;}
   const btn=document.getElementById('gen-btn');btn.disabled=true;btn.innerHTML='<span class="loader"></span>L\'IA génère ton CV...';
   try{
-    const res=await fetch('/api/cv/generer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    const res=await fetch('/api/cv/generer',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+authToken},body:JSON.stringify(data)});
     const result=await res.json();if(!res.ok)throw new Error(result.erreur||'Erreur serveur');
     cvData=result.cv;renderPreview(cvData,'cv-preview');
     document.getElementById('dl-btn').classList.add('show');
-    document.getElementById('status').textContent=`✓ CV sauvegardé (ID #${result.id}) — Template : ${selectedTemplate}`;
+    document.getElementById('status').textContent=`✓ CV sauvegardé (ID #${result.id})`;
   }catch(err){document.getElementById('status').textContent='✗ '+err.message;}
   btn.disabled=false;btn.innerHTML='Régénérer & Sauvegarder';
 }
@@ -357,12 +464,7 @@ function dragOver(e){e.preventDefault();document.getElementById('upload-zone').c
 function dragLeave(){document.getElementById('upload-zone').classList.remove('dragover');}
 function dropFile(e){e.preventDefault();document.getElementById('upload-zone').classList.remove('dragover');if(e.dataTransfer.files[0])setFile(e.dataTransfer.files[0]);}
 function fileSelected(e){setFile(e.target.files[0]);}
-function setFile(file){
-  selectedFile=file;
-  const zone=document.getElementById('upload-zone');
-  zone.classList.add('file-selected');
-  zone.innerHTML=`<div class="upload-icon">✅</div><div class="file-name">${file.name}</div><p style="font-size:12px;margin-top:4px;color:var(--ink3)">${(file.size/1024).toFixed(0)} KB — Clique sur "Analyser" pour continuer</p>`;
-}
+function setFile(file){selectedFile=file;const zone=document.getElementById('upload-zone');zone.classList.add('file-selected');zone.innerHTML=`<div class="upload-icon">✅</div><div class="file-name">${file.name}</div><p style="font-size:12px;margin-top:4px;color:var(--ink3)">${(file.size/1024).toFixed(0)} KB — Clique sur "Analyser" pour continuer</p>`;}
 
 async function analyserCV(){
   if(!selectedFile){document.getElementById('status-analyse').textContent='⚠ Sélectionne un fichier d\'abord.';return;}
@@ -379,9 +481,9 @@ async function analyserCV(){
     document.getElementById('score-original-bar').style.width=so+'%';
     document.getElementById('score-ats-bar').style.width=sa+'%';
     const problemes=result.analyse?.problemes||[];
-    document.getElementById('problemes-list').innerHTML='<p style="font-size:12px;font-weight:600;color:var(--ink3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">Problèmes détectés :</p>'+problemes.map(p=>`<div class="probleme-item">${p}</div>`).join('')+'<div class="amelioration-item" style="margin-top:12px">CV réécrit en format ATS linéaire</div><div class="amelioration-item">Verbes d\'action forts ajoutés</div><div class="amelioration-item">Mots-clés optimisés pour les recruteurs</div>';
+    document.getElementById('problemes-list').innerHTML='<p style="font-size:12px;font-weight:600;color:var(--ink3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">Problèmes détectés :</p>'+problemes.map(p=>`<div class="probleme-item">${p}</div>`).join('')+'<div class="amelioration-item" style="margin-top:12px">CV réécrit en format ATS linéaire</div><div class="amelioration-item">Verbes d\'action forts ajoutés</div><div class="amelioration-item">Mots-clés optimisés</div>';
     document.getElementById('analyse-result').style.display='block';
-    document.getElementById('status-analyse').textContent='✓ Analyse terminée ! Télécharge ton CV optimisé.';
+    document.getElementById('status-analyse').textContent='✓ Analyse terminée !';
   }catch(err){document.getElementById('status-analyse').textContent='✗ '+err.message;}
   btn.disabled=false;btn.innerHTML='Analyser & Optimiser avec l\'IA';
 }
@@ -389,26 +491,22 @@ async function analyserCV(){
 function renderPreview(cv,containerId){
   const el=document.getElementById(containerId);
   if(selectedTemplate==='moderne'){
-    el.style.padding='0';
-    el.style.display='flex';
-    el.style.minHeight='380px';
-    let sidebar=`<div style="width:38%;background:#1a2b4a;color:#fff;padding:1.5rem 1rem;border-radius:8px 0 0 8px">`;
-    sidebar+=`<div style="font-size:16px;font-weight:700;margin-bottom:3px">${cv.nom||''}</div>`;
-    sidebar+=`<div style="font-size:11px;color:#a8c4e0;margin-bottom:16px">${cv.poste||''}</div>`;
-    sidebar+=`<div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#a8c4e0;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:4px;margin-bottom:8px">Contact</div>`;
-    sidebar+=`<div style="font-size:10px;color:#cde;line-height:1.8">${(cv.contact||'').split('|').join('<br>')}</div>`;
-    if(cv.competences){sidebar+=`<div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#a8c4e0;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:4px;margin:14px 0 8px">Compétences</div><div style="font-size:10px;color:#cde;line-height:1.7">${cv.competences}</div>`;}
-    if(cv.langues){sidebar+=`<div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#a8c4e0;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:4px;margin:14px 0 8px">Langues</div><div style="font-size:10px;color:#cde;line-height:1.7">${cv.langues}</div>`;}
-    sidebar+=`</div>`;
-    let main=`<div style="flex:1;padding:1.5rem;font-size:11.5px;color:#111">`;
-    if(cv.resume){main+=`<div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#1a2b4a;border-bottom:2px solid #1a2b4a;padding-bottom:3px;margin-bottom:8px">Profil</div><div style="margin-bottom:12px;color:#333;font-size:11px">${cv.resume}</div>`;}
-    if(cv.experiences?.length){main+=`<div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#1a2b4a;border-bottom:2px solid #1a2b4a;padding-bottom:3px;margin-bottom:8px">Expériences</div>`;cv.experiences.forEach(e=>{main+=`<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:11px"><span>${e.poste}</span><span style="color:#555;font-weight:400">${e.periode||''}</span></div><div style="font-style:italic;color:#666;font-size:10px;margin:1px 0 3px">${e.entreprise||''}</div><div style="color:#333;font-size:10.5px">${e.description||''}</div></div>`;});}
-    if(cv.formations?.length){main+=`<div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#1a2b4a;border-bottom:2px solid #1a2b4a;padding-bottom:3px;margin-bottom:8px;margin-top:10px">Formation</div>`;cv.formations.forEach(f=>{main+=`<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:11px"><span>${f.titre}</span><span style="color:#555;font-weight:400">${f.periode||''}</span></div><div style="font-style:italic;color:#666;font-size:10px">${f.etablissement||''}</div></div>`;});}
-    main+=`</div>`;
-    el.innerHTML=sidebar+main;
-  } else if(selectedTemplate==='minimaliste'){
-    el.style.padding='2rem 2.5rem';
-    el.style.display='block';
+    el.style.padding='0';el.style.display='flex';el.style.minHeight='380px';
+    let s=`<div style="width:38%;background:#1a2b4a;color:#fff;padding:1.5rem 1rem;border-radius:8px 0 0 8px">`;
+    s+=`<div style="font-size:16px;font-weight:700;margin-bottom:3px">${cv.nom||''}</div>`;
+    s+=`<div style="font-size:11px;color:#a8c4e0;margin-bottom:16px">${cv.poste||''}</div>`;
+    s+=`<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:#a8c4e0;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:4px;margin-bottom:8px">Contact</div>`;
+    s+=`<div style="font-size:10px;color:#cde;line-height:1.8">${(cv.contact||'').split('|').join('<br>')}</div>`;
+    if(cv.competences){s+=`<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:#a8c4e0;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:4px;margin:14px 0 8px">Compétences</div><div style="font-size:10px;color:#cde;line-height:1.7">${cv.competences}</div>`;}
+    if(cv.langues){s+=`<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:#a8c4e0;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:4px;margin:14px 0 8px">Langues</div><div style="font-size:10px;color:#cde">${cv.langues}</div>`;}
+    s+=`</div>`;
+    let m=`<div style="flex:1;padding:1.5rem;font-size:11.5px;color:#111">`;
+    if(cv.resume){m+=`<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:#1a2b4a;border-bottom:2px solid #1a2b4a;padding-bottom:3px;margin-bottom:8px">Profil</div><div style="margin-bottom:12px;color:#333;font-size:11px">${cv.resume}</div>`;}
+    if(cv.experiences?.length){m+=`<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:#1a2b4a;border-bottom:2px solid #1a2b4a;padding-bottom:3px;margin-bottom:8px">Expériences</div>`;cv.experiences.forEach(e=>{m+=`<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:11px"><span>${e.poste}</span><span style="color:#555;font-weight:400">${e.periode||''}</span></div><div style="font-style:italic;color:#666;font-size:10px;margin:1px 0 3px">${e.entreprise||''}</div><div style="color:#333;font-size:10.5px">${e.description||''}</div></div>`;});}
+    if(cv.formations?.length){m+=`<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:#1a2b4a;border-bottom:2px solid #1a2b4a;padding-bottom:3px;margin-bottom:8px;margin-top:10px">Formation</div>`;cv.formations.forEach(f=>{m+=`<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:11px"><span>${f.titre}</span><span style="color:#555;font-weight:400">${f.periode||''}</span></div><div style="font-style:italic;color:#666;font-size:10px">${f.etablissement||''}</div></div>`;});}
+    m+=`</div>`;el.innerHTML=s+m;
+  }else if(selectedTemplate==='minimaliste'){
+    el.style.padding='2rem 2.5rem';el.style.display='block';
     let h=`<div style="font-size:22px;font-weight:300;color:#111;letter-spacing:-.02em;margin-bottom:2px">${cv.nom||''}</div>`;
     h+=`<div style="font-size:12px;color:#888;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">${cv.poste||''}</div>`;
     h+=`<div style="font-size:10.5px;color:#aaa;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #eee">${cv.contact||''}</div>`;
@@ -417,8 +515,8 @@ function renderPreview(cv,containerId){
     if(cv.formations?.length){h+=`<div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#bbb;margin-bottom:10px;margin-top:4px">Formation</div>`;cv.formations.forEach(f=>{h+=`<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:#222"><span>${f.titre}</span><span style="color:#aaa;font-weight:400">${f.periode||''}</span></div><div style="font-size:10.5px;color:#aaa">${f.etablissement||''}</div></div>`;});}
     if(cv.competences){h+=`<div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#bbb;margin-bottom:6px;margin-top:12px">Compétences</div><div style="font-size:11px;color:#555">${cv.competences}</div>`;}
     if(cv.langues){h+=`<div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#bbb;margin-bottom:6px;margin-top:12px">Langues</div><div style="font-size:11px;color:#555">${cv.langues}</div>`;}
-    el.style.display='block';el.innerHTML=h;
-  } else {
+    el.innerHTML=h;
+  }else{
     el.style.padding='1.75rem 2rem';el.style.display='block';
     let h=`<div class="cv-name">${cv.nom||''}</div><div class="cv-title">${cv.poste||''}</div><div class="cv-contact">${cv.contact||''}</div>`;
     if(cv.resume)h+=`<div class="cv-sec"><div class="cv-sec-title">Profil</div><div class="cv-summary">${cv.resume}</div></div>`;
@@ -435,38 +533,33 @@ function telechargerPDF(cv){
   const{jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'});
   const mL=20,mR=20,mT=20,cW=170;let y=mT;
   function checkPage(n=8){if(y+n>277){doc.addPage();y=mT;}}
-  function secTitle(t,color=[10,10,10]){checkPage(10);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(...color);doc.text(t.toUpperCase(),mL,y);doc.setDrawColor(...color);doc.setLineWidth(.3);doc.line(mL,y+1.5,210-mR,y+1.5);y+=6;}
-  function bodyTxt(t,c=[50,50,50],w=cW){doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(...c);const lines=doc.splitTextToSize(t||'',w);checkPage(lines.length*5);doc.text(lines,mL,y);y+=lines.length*5;}
-
+  function secTitle(t){checkPage(10);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(10,10,10);doc.text(t.toUpperCase(),mL,y);doc.setDrawColor(180,180,180);doc.setLineWidth(.3);doc.line(mL,y+1.5,210-mR,y+1.5);y+=6;}
+  function bodyTxt(t,w=cW){doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(50,50,50);const lines=doc.splitTextToSize(t||'',w);checkPage(lines.length*5);doc.text(lines,mL,y);y+=lines.length*5;}
   if(selectedTemplate==='moderne'){
-    const sW=70;
-    doc.setFillColor(26,43,74);doc.rect(0,0,sW,297,'F');
-    doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(255,255,255);
-    const nameLines=doc.splitTextToSize(cv.nom||'',sW-16);doc.text(nameLines,8,mT);y=mT+nameLines.length*6+2;
-    doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(168,196,224);
-    doc.text(cv.poste||'',8,y);y+=10;
+    const sW=70;doc.setFillColor(26,43,74);doc.rect(0,0,sW,297,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(255,255,255);const nl=doc.splitTextToSize(cv.nom||'',sW-16);doc.text(nl,8,mT);y=mT+nl.length*6+2;
+    doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(168,196,224);doc.text(cv.poste||'',8,y);y+=10;
     doc.setFontSize(7);doc.setTextColor(200,220,238);doc.setFont('helvetica','bold');doc.text('CONTACT',8,y);y+=4;
-    doc.setFont('helvetica','normal');doc.setFontSize(8);
-    (cv.contact||'').split('|').forEach(c=>{const lines=doc.splitTextToSize(c.trim(),sW-16);doc.text(lines,8,y);y+=lines.length*4+1;});
-    if(cv.competences){y+=4;doc.setFontSize(7);doc.setTextColor(200,220,238);doc.setFont('helvetica','bold');doc.text('COMPÉTENCES',8,y);y+=4;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(180,210,230);const lines=doc.splitTextToSize(cv.competences,sW-16);doc.text(lines,8,y);y+=lines.length*4;}
+    doc.setFont('helvetica','normal');doc.setFontSize(8);(cv.contact||'').split('|').forEach(c=>{const l=doc.splitTextToSize(c.trim(),sW-16);doc.text(l,8,y);y+=l.length*4+1;});
+    if(cv.competences){y+=4;doc.setFontSize(7);doc.setTextColor(200,220,238);doc.setFont('helvetica','bold');doc.text('COMPÉTENCES',8,y);y+=4;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(180,210,230);const l=doc.splitTextToSize(cv.competences,sW-16);doc.text(l,8,y);y+=l.length*4;}
     if(cv.langues){y+=4;doc.setFontSize(7);doc.setTextColor(200,220,238);doc.setFont('helvetica','bold');doc.text('LANGUES',8,y);y+=4;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(180,210,230);doc.text(cv.langues,8,y);}
     const rX=sW+8,rW=210-mR-sW-8;let ry=mT;
-    if(cv.resume){doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(26,43,74);doc.text('PROFIL',rX,ry);doc.setDrawColor(26,43,74);doc.setLineWidth(.4);doc.line(rX,ry+1.5,210-mR,ry+1.5);ry+=5;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(50,50,50);const lines=doc.splitTextToSize(cv.resume,rW);doc.text(lines,rX,ry);ry+=lines.length*4.5+6;}
-    if(cv.experiences?.length){doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(26,43,74);doc.text('EXPÉRIENCES',rX,ry);doc.setDrawColor(26,43,74);doc.setLineWidth(.4);doc.line(rX,ry+1.5,210-mR,ry+1.5);ry+=6;cv.experiences.forEach(e=>{doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(10,10,10);doc.text(e.poste||'',rX,ry);if(e.periode){const pw=doc.getTextWidth(e.periode);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(120,120,120);doc.text(e.periode,210-mR-pw,ry);}ry+=4;if(e.entreprise){doc.setFont('helvetica','italic');doc.setFontSize(8);doc.setTextColor(100,100,100);doc.text(e.entreprise,rX,ry);ry+=4;}if(e.description){doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(60,60,60);const lines=doc.splitTextToSize(e.description,rW);doc.text(lines,rX,ry);ry+=lines.length*4;}ry+=4;});}
+    if(cv.resume){doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(26,43,74);doc.text('PROFIL',rX,ry);doc.setDrawColor(26,43,74);doc.setLineWidth(.4);doc.line(rX,ry+1.5,210-mR,ry+1.5);ry+=5;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(50,50,50);const l=doc.splitTextToSize(cv.resume,rW);doc.text(l,rX,ry);ry+=l.length*4.5+6;}
+    if(cv.experiences?.length){doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(26,43,74);doc.text('EXPÉRIENCES',rX,ry);doc.setDrawColor(26,43,74);doc.setLineWidth(.4);doc.line(rX,ry+1.5,210-mR,ry+1.5);ry+=6;cv.experiences.forEach(e=>{doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(10,10,10);doc.text(e.poste||'',rX,ry);if(e.periode){const pw=doc.getTextWidth(e.periode);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(120,120,120);doc.text(e.periode,210-mR-pw,ry);}ry+=4;if(e.entreprise){doc.setFont('helvetica','italic');doc.setFontSize(8);doc.setTextColor(100,100,100);doc.text(e.entreprise,rX,ry);ry+=4;}if(e.description){const l=doc.splitTextToSize(e.description,rW);doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(60,60,60);doc.text(l,rX,ry);ry+=l.length*4;}ry+=4;});}
     if(cv.formations?.length){doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(26,43,74);doc.text('FORMATION',rX,ry);doc.setDrawColor(26,43,74);doc.setLineWidth(.4);doc.line(rX,ry+1.5,210-mR,ry+1.5);ry+=6;cv.formations.forEach(f=>{doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(10,10,10);doc.text(f.titre||'',rX,ry);if(f.periode){const pw=doc.getTextWidth(f.periode);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(120,120,120);doc.text(f.periode,210-mR-pw,ry);}ry+=4;if(f.etablissement){doc.setFont('helvetica','italic');doc.setFontSize(8);doc.setTextColor(100,100,100);doc.text(f.etablissement,rX,ry);ry+=4;}ry+=2;});}
-  } else if(selectedTemplate==='minimaliste'){
+  }else if(selectedTemplate==='minimaliste'){
     doc.setFont('helvetica','normal');doc.setFontSize(22);doc.setTextColor(17,17,17);doc.text(cv.nom||'',mL,y);y+=8;
-    doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(150,150,150);doc.text((cv.poste||'').toUpperCase(),mL,y);y+=6;
+    doc.setFontSize(9);doc.setTextColor(150,150,150);doc.text((cv.poste||'').toUpperCase(),mL,y);y+=6;
     doc.setFontSize(8.5);doc.setTextColor(180,180,180);doc.text(cv.contact||'',mL,y);y+=4;
     doc.setDrawColor(230,230,230);doc.setLineWidth(.4);doc.line(mL,y+2,210-mR,y+2);y+=8;
-    function minSecTitle(t){checkPage(10);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(180,180,180);doc.text(t.toUpperCase(),mL,y);doc.setDrawColor(240,240,240);doc.setLineWidth(.3);doc.line(mL,y+2,210-mR,y+2);y+=7;}
-    function minBody(t){doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(80,80,80);const lines=doc.splitTextToSize(t||'',cW);checkPage(lines.length*5);doc.text(lines,mL,y);y+=lines.length*5;}
-    if(cv.resume){minSecTitle('Profil');minBody(cv.resume);y+=4;}
-    if(cv.experiences?.length){minSecTitle('Expériences');cv.experiences.forEach(e=>{checkPage(12);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(34,34,34);doc.text(e.poste||'',mL,y);if(e.periode){const pw=doc.getTextWidth(e.periode);doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(170,170,170);doc.text(e.periode,210-mR-pw,y);}y+=4.5;if(e.entreprise){doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(170,170,170);doc.text(e.entreprise,mL,y);y+=4;}if(e.description)minBody(e.description);y+=4;});}
-    if(cv.formations?.length){minSecTitle('Formation');cv.formations.forEach(f=>{checkPage(10);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(34,34,34);doc.text(f.titre||'',mL,y);if(f.periode){const pw=doc.getTextWidth(f.periode);doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(170,170,170);doc.text(f.periode,210-mR-pw,y);}y+=4.5;if(f.etablissement){doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(170,170,170);doc.text(f.etablissement,mL,y);y+=4;}y+=2;});}
-    if(cv.competences){minSecTitle('Compétences');minBody(cv.competences);y+=3;}
-    if(cv.langues){minSecTitle('Langues');minBody(cv.langues);}
-  } else {
+    function mSec(t){checkPage(10);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(180,180,180);doc.text(t.toUpperCase(),mL,y);doc.setDrawColor(240,240,240);doc.setLineWidth(.3);doc.line(mL,y+2,210-mR,y+2);y+=7;}
+    function mBody(t){doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(80,80,80);const l=doc.splitTextToSize(t||'',cW);checkPage(l.length*5);doc.text(l,mL,y);y+=l.length*5;}
+    if(cv.resume){mSec('Profil');mBody(cv.resume);y+=4;}
+    if(cv.experiences?.length){mSec('Expériences');cv.experiences.forEach(e=>{checkPage(12);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(34,34,34);doc.text(e.poste||'',mL,y);if(e.periode){const pw=doc.getTextWidth(e.periode);doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(170,170,170);doc.text(e.periode,210-mR-pw,y);}y+=4.5;if(e.entreprise){doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(170,170,170);doc.text(e.entreprise,mL,y);y+=4;}if(e.description)mBody(e.description);y+=4;});}
+    if(cv.formations?.length){mSec('Formation');cv.formations.forEach(f=>{checkPage(10);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(34,34,34);doc.text(f.titre||'',mL,y);if(f.periode){const pw=doc.getTextWidth(f.periode);doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(170,170,170);doc.text(f.periode,210-mR-pw,y);}y+=4.5;if(f.etablissement){doc.setFontSize(8.5);doc.setTextColor(170,170,170);doc.text(f.etablissement,mL,y);y+=4;}y+=2;});}
+    if(cv.competences){mSec('Compétences');mBody(cv.competences);y+=3;}
+    if(cv.langues){mSec('Langues');mBody(cv.langues);}
+  }else{
     doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(10,10,10);doc.text(cv.nom||'',mL,y);y+=7;
     doc.setFont('helvetica','normal');doc.setFontSize(12);doc.setTextColor(200,98,42);doc.text(cv.poste||'',mL,y);y+=6;
     doc.setFontSize(9);doc.setTextColor(80,80,80);doc.text(cv.contact||'',mL,y);y+=2;
@@ -477,29 +570,33 @@ function telechargerPDF(cv){
     if(cv.competences){secTitle('Compétences');bodyTxt(cv.competences);y+=3;}
     if(cv.langues){secTitle('Langues');bodyTxt(cv.langues);}
   }
-  doc.save((cv.nom||'CV').replace(/\s+/g,'_')+'_'+selectedTemplate+'_ATS.pdf');
+  doc.save((cv.nom||'CV').replace(/\s+/g,'_')+'_'+selectedTemplate+'.pdf');
 }
 
 async function chargerDashboard(){
   try{
-    const[statsRes,listRes]=await Promise.all([fetch('/api/cv/stats'),fetch('/api/cv')]);
+    const[statsRes,listRes]=await Promise.all([
+      fetch('/api/cv/stats',{headers:{'Authorization':'Bearer '+authToken}}),
+      fetch('/api/cv',{headers:{'Authorization':'Bearer '+authToken}})
+    ]);
     const stats=await statsRes.json();const cvs=await listRes.json();
     document.getElementById('stat-total').textContent=stats.total??'—';
     document.getElementById('stat-today').textContent=stats.aujourdhui??'—';
     const body=document.getElementById('cv-list-body');
-    if(!cvs.length){body.innerHTML='<div class="no-data">Aucun CV encore.</div>';return;}
+    if(!cvs.length){body.innerHTML='<div class="no-data">Aucun CV encore. Crée ton premier !</div>';return;}
     body.innerHTML=cvs.map(cv=>`<div class="cv-row" onclick="voirCV(${cv.id})"><div class="cv-row-name">${cv.nom}</div><div class="cv-row-poste">${cv.poste}</div><div class="cv-row-date">${new Date(cv.cree_le).toLocaleDateString('fr-FR')}</div><button class="cv-row-del" onclick="supprimerCV(event,${cv.id})">🗑</button></div>`).join('');
   }catch(err){document.getElementById('cv-list-body').innerHTML='<div class="no-data">Erreur de connexion.</div>';}
 }
 
 async function voirCV(id){
-  const res=await fetch('/api/cv/'+id);const cv=await res.json();
+  const res=await fetch('/api/cv/'+id,{headers:{'Authorization':'Bearer '+authToken}});
+  const cv=await res.json();
   if(cv.cv_genere){cvData=cv.cv_genere;showPage('create',document.querySelectorAll('.nav-tab')[0]);renderPreview(cvData,'cv-preview');document.getElementById('dl-btn').classList.add('show');}
 }
 
 async function supprimerCV(e,id){
   e.stopPropagation();if(!confirm('Supprimer ce CV ?'))return;
-  await fetch('/api/cv/'+id,{method:'DELETE'});chargerDashboard();
+  await fetch('/api/cv/'+id,{method:'DELETE',headers:{'Authorization':'Bearer '+authToken}});chargerDashboard();
 }
 </script>
 </body>
