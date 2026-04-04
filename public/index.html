@@ -149,6 +149,12 @@ textarea{resize:vertical;min-height:70px}
 .prev-minimaliste .ms{height:3px;background:#999;border-radius:1px;margin-bottom:8px;width:35%}
 .prev-minimaliste .ml{height:2px;background:#f0f0f0;border-radius:1px;margin-bottom:4px}
 .prev-minimaliste .mb{height:3px;background:#ddd;border-radius:1px;margin-bottom:2px}
+
+.force-bar{height:4px;flex:1;border-radius:99px;background:var(--cream3);transition:background .3s}
+.force-bar.faible{background:#e05a3a}
+.force-bar.moyen{background:#f0a500}
+.force-bar.fort{background:#2a7a4b}
+.force-bar.tres-fort{background:#1a6b3a}
 </style>
 </head>
 <body>
@@ -178,7 +184,7 @@ textarea{resize:vertical;min-height:70px}
     <!-- CONNEXION -->
     <div id="form-connexion">
       <div class="auth-field"><label>Email</label><input id="login-email" type="email" placeholder="ton@email.com"/></div>
-      <div class="auth-field"><label>Mot de passe</label><input id="login-password" type="password" placeholder="••••••"/></div>
+      <div class="auth-field"><label>Mot de passe</label><input id="login-password" type="password" placeholder="••••••••"/></div>
       <button class="auth-btn" id="login-btn" onclick="seConnecter()">Se connecter</button>
       <p class="auth-error" id="login-error"></p>
     </div>
@@ -187,9 +193,33 @@ textarea{resize:vertical;min-height:70px}
     <div id="form-inscription" style="display:none">
       <div class="auth-field"><label>Prénom & Nom</label><input id="reg-nom" placeholder="Amine Benali"/></div>
       <div class="auth-field"><label>Email</label><input id="reg-email" type="email" placeholder="ton@email.com"/></div>
-      <div class="auth-field"><label>Mot de passe (min. 6 caractères)</label><input id="reg-password" type="password" placeholder="••••••"/></div>
+      <div class="auth-field">
+        <label>Mot de passe</label>
+        <input id="reg-password" type="password" placeholder="Min. 8 car, 1 majuscule, 1 chiffre, 1 symbole" oninput="evaluerMdp(this.value)"/>
+        <div id="mdp-force" style="margin-top:6px;display:flex;gap:4px">
+          <div class="force-bar" id="f1"></div><div class="force-bar" id="f2"></div>
+          <div class="force-bar" id="f3"></div><div class="force-bar" id="f4"></div>
+        </div>
+        <p id="mdp-hint" style="font-size:11px;color:var(--ink3);margin-top:4px"></p>
+      </div>
       <button class="auth-btn" id="reg-btn" onclick="sInscrire()">Créer mon compte</button>
       <p class="auth-error" id="reg-error"></p>
+    </div>
+
+    <!-- VÉRIFICATION CODE -->
+    <div id="form-verification" style="display:none">
+      <div style="text-align:center;margin-bottom:1.5rem">
+        <div style="font-size:36px;margin-bottom:8px">📧</div>
+        <p style="font-size:14px;color:var(--ink2);font-weight:500">Code envoyé sur ton email !</p>
+        <p style="font-size:12px;color:var(--ink3);margin-top:4px">Entre le code à 6 chiffres reçu dans ta boite mail</p>
+      </div>
+      <div class="auth-field">
+        <label>Code de vérification</label>
+        <input id="verif-code" type="text" placeholder="123456" maxlength="6" style="text-align:center;font-size:24px;font-weight:700;letter-spacing:8px"/>
+      </div>
+      <button class="auth-btn" id="verif-btn" onclick="verifierCode()">Vérifier mon compte</button>
+      <p class="auth-error" id="verif-error"></p>
+      <p style="text-align:center;font-size:12px;color:var(--ink3);margin-top:12px">Pas reçu ? <button onclick="switchAuth('inscription')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:12px">Réessayer</button></p>
     </div>
   </div>
 </div>
@@ -321,11 +351,37 @@ let cvData=null,cvAnalyseData=null,selectedFile=null,selectedTemplate='classique
 let currentUser=null,authToken=null;
 
 // ── AUTH ──────────────────────────────────────────────────────────────────
+let emailEnAttente = '';
+
 function switchAuth(mode){
   document.getElementById('form-connexion').style.display=mode==='connexion'?'block':'none';
   document.getElementById('form-inscription').style.display=mode==='inscription'?'block':'none';
+  document.getElementById('form-verification').style.display=mode==='verification'?'block':'none';
   document.getElementById('tab-connexion').classList.toggle('active',mode==='connexion');
   document.getElementById('tab-inscription').classList.toggle('active',mode==='inscription');
+  if(mode==='verification'){
+    document.getElementById('tab-connexion').style.display='none';
+    document.getElementById('tab-inscription').style.display='none';
+  } else {
+    document.getElementById('tab-connexion').style.display='';
+    document.getElementById('tab-inscription').style.display='';
+  }
+}
+
+function evaluerMdp(password){
+  let score=0;
+  const hints=[];
+  if(password.length>=8)score++;else hints.push('8 caractères min');
+  if(/[A-Z]/.test(password))score++;else hints.push('1 majuscule');
+  if(/[0-9]/.test(password))score++;else hints.push('1 chiffre');
+  if(/[!@#$%^&*()_+\-=\[\]{};:,.<>?]/.test(password))score++;else hints.push('1 symbole (!@#...)');
+  const classes=['faible','moyen','fort','tres-fort'];
+  const labels=['Faible','Moyen','Fort','Très fort'];
+  for(let i=1;i<=4;i++){
+    const bar=document.getElementById('f'+i);
+    bar.className='force-bar'+(i<=score?' '+classes[score-1]:'');
+  }
+  document.getElementById('mdp-hint').textContent=hints.length?'Manque : '+hints.join(', '):(score===4?'✓ Mot de passe fort !':'');
 }
 
 async function seConnecter(){
@@ -348,15 +404,30 @@ async function sInscrire(){
   const email=document.getElementById('reg-email').value.trim();
   const password=document.getElementById('reg-password').value;
   const btn=document.getElementById('reg-btn');
-  btn.disabled=true;btn.textContent='Création...';
+  btn.disabled=true;btn.innerHTML='<span class="loader"></span>Envoi du code...';
   document.getElementById('reg-error').textContent='';
   try{
     const res=await fetch('/api/auth/inscription',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nom,email,password})});
     const data=await res.json();
     if(!res.ok)throw new Error(data.erreur);
-    connecterUtilisateur(data.token,data.user);
+    emailEnAttente=email;
+    switchAuth('verification');
   }catch(err){document.getElementById('reg-error').textContent=err.message;}
-  btn.disabled=false;btn.textContent='Créer mon compte';
+  btn.disabled=false;btn.innerHTML='Créer mon compte';
+}
+
+async function verifierCode(){
+  const code=document.getElementById('verif-code').value.trim();
+  const btn=document.getElementById('verif-btn');
+  btn.disabled=true;btn.innerHTML='<span class="loader"></span>Vérification...';
+  document.getElementById('verif-error').textContent='';
+  try{
+    const res=await fetch('/api/auth/verifier',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:emailEnAttente,code})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.erreur);
+    connecterUtilisateur(data.token,data.user);
+  }catch(err){document.getElementById('verif-error').textContent=err.message;}
+  btn.disabled=false;btn.innerHTML='Vérifier mon compte';
 }
 
 function connecterUtilisateur(token,user){
