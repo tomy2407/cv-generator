@@ -35,6 +35,7 @@ async function envoyerCode(email, code, nom) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+console.log('Clé Brevo:', process.env.BREVO_API_KEY ? 'présente' : 'MANQUANTE');
       'api-key': process.env.BREVO_API_KEY
     },
     body: JSON.stringify({
