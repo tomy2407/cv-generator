@@ -5,8 +5,7 @@ const bcrypt   = require('bcryptjs');
 const jwt      = require('jsonwebtoken');
 const Database = require('better-sqlite3');
 const path     = require('path');
-const BREVO_KEY = process.env.BREVO_API_KEY || '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';
-
+const BREVO_KEY = process.env.BREVO_API_KEY || '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';
 const db = new Database(path.join(__dirname, '..', 'cvs.db'));
 
 db.exec(`
