@@ -6,6 +6,7 @@ const jwt      = require('jsonwebtoken');
 const Database = require('better-sqlite3');
 const path     = require('path');
 const { Resend } = require('resend');
+const resendClient = new Resend(process.env.RESEND_API_KEY);
 
 const db = new Database(path.join(__dirname, '..', 'cvs.db'));
 
@@ -42,8 +43,7 @@ function verifierMotDePasse(password) {
 }
 
 async function envoyerCode(email, code, nom) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
-  await resend.emails.send({
+  await resendClient.emails.send({
     from: 'CVGen Pro <onboarding@resend.dev>',
     to: email,
     subject: 'Ton code de vérification CVGen Pro',
