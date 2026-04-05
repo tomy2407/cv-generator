@@ -5,6 +5,7 @@ const bcrypt   = require('bcryptjs');
 const jwt      = require('jsonwebtoken');
 const Database = require('better-sqlite3');
 const path     = require('path');
+const BREVO_KEY = process.env.BREVO_API_KEY || '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';
 
 const db = new Database(path.join(__dirname, '..', 'cvs.db'));
 
@@ -36,7 +37,7 @@ async function envoyerCode(email, code, nom) {
     headers: {
       'Content-Type': 'application/json',
 
-      'api-key': process.env.BREVO_API_KEY
+      'api-key': BREVO_KEY
     },
     body: JSON.stringify({
       sender: { name: 'CVGen Pro', email: process.env.EMAIL_USER || 'noreply@cvgenpro.com' },
