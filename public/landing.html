@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CVGen Pro — Crée ton CV ATS en 60 secondes avec l'IA</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#0f0e0d;--ink2:#3a3835;--ink3:#7a7672;--cream:#faf8f4;--cream2:#f2efe9;--cream3:#e8e4dc;--accent:#c8622a;--accent2:#e8845a;--white:#fff;--radius:12px;--shadow:0 2px 20px rgba(15,14,13,0.08)}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,248,244,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream3);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);text-decoration:none}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{font-size:14px;color:var(--ink3);text-decoration:none;transition:color .15s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--accent);color:#fff;padding:8px 20px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;transition:background .15s}
+.nav-cta:hover{background:#b5531f;color:#fff}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem;background:var(--ink);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%, rgba(200,98,42,0.15) 0%, transparent 60%)}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#b8b5b0;font-size:12px;font-weight:500;padding:6px 16px;border-radius:999px;margin-bottom:2rem;letter-spacing:.05em}
+.hero-badge::before{content:'✦';color:var(--accent2)}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.5rem,6vw,4.5rem);color:#fff;line-height:1.05;margin-bottom:1.5rem;max-width:800px}
+.hero h1 em{color:var(--accent2);font-style:normal}
+.hero p{font-size:1.1rem;color:#b8b5b0;max-width:520px;margin:0 auto 2.5rem;line-height:1.7}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#fff;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:#b5531f;transform:translateY(-1px)}
+.btn-secondary{background:rgba(255,255,255,0.08);color:#fff;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:500;text-decoration:none;border:1px solid rgba(255,255,255,0.15);transition:all .15s}
+.btn-secondary:hover{background:rgba(255,255,255,0.12)}
+.hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:4rem;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'DM Serif Display',serif;font-size:2rem;color:#fff;display:block}
+.hero-stat-label{font-size:12px;color:#7a7672;margin-top:2px}
+
+/* ── SECTIONS ── */
+section{padding:5rem 2rem}
+.container{max-width:1100px;margin:0 auto}
+.section-badge{display:inline-block;background:var(--cream2);color:var(--accent);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 14px;border-radius:999px;margin-bottom:1rem}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);color:var(--ink);line-height:1.15;margin-bottom:1rem}
+.section-title span{color:var(--accent)}
+.section-sub{font-size:1rem;color:var(--ink3);max-width:520px;line-height:1.7}
+
+/* ── FEATURES ── */
+.features{background:var(--white)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-top:3rem}
+.feature-card{background:var(--cream);border-radius:var(--radius);padding:2rem;border:1px solid var(--cream3);transition:all .2s}
+.feature-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.feature-icon{width:48px;height:48px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:1.25rem}
+.feature-title{font-size:17px;font-weight:600;margin-bottom:.5rem;color:var(--ink)}
+.feature-desc{font-size:14px;color:var(--ink3);line-height:1.6}
+
+/* ── HOW IT WORKS ── */
+.how{background:var(--cream)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;margin-top:3rem;position:relative}
+.step{text-align:center;padding:2rem 1.5rem}
+.step-num{width:48px;height:48px;background:var(--ink);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.2rem;margin:0 auto 1.25rem}
+.step-title{font-size:16px;font-weight:600;margin-bottom:.5rem;color:var(--ink)}
+.step-desc{font-size:13px;color:var(--ink3);line-height:1.6}
+
+/* ── TESTIMONIALS ── */
+.testimonials{background:var(--white)}
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.testimonial-card{background:var(--cream);border-radius:var(--radius);padding:1.75rem;border:1px solid var(--cream3)}
+.testimonial-stars{color:var(--accent);font-size:14px;margin-bottom:.75rem;letter-spacing:2px}
+.testimonial-text{font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:1.25rem;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:10px}
+.testimonial-avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600}
+.testimonial-name{font-size:13px;font-weight:600;color:var(--ink)}
+.testimonial-role{font-size:12px;color:var(--ink3)}
+
+/* ── PRICING ── */
+.pricing{background:var(--cream)}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem;max-width:700px}
+.pricing-card{background:var(--white);border-radius:var(--radius);padding:2rem;border:1px solid var(--cream3)}
+.pricing-card.featured{border:2px solid var(--accent);position:relative}
+.pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:11px;font-weight:600;padding:4px 16px;border-radius:999px;white-space:nowrap}
+.pricing-name{font-size:14px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.pricing-price{font-family:'DM Serif Display',serif;font-size:2.5rem;color:var(--ink);margin-bottom:.25rem}
+.pricing-price span{font-size:1rem;font-family:'DM Sans',sans-serif;color:var(--ink3);font-weight:400}
+.pricing-desc{font-size:13px;color:var(--ink3);margin-bottom:1.5rem}
+.pricing-features{list-style:none;margin-bottom:2rem}
+.pricing-features li{font-size:13px;color:var(--ink2);padding:6px 0;border-bottom:1px solid var(--cream3);display:flex;align-items:center;gap:8px}
+.pricing-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
+.pricing-btn{display:block;text-align:center;padding:12px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s}
+.pricing-btn-free{background:var(--cream);color:var(--ink);border:1px solid var(--cream3)}
+.pricing-btn-free:hover{background:var(--cream2)}
+.pricing-btn-pro{background:var(--accent);color:#fff}
+.pricing-btn-pro:hover{background:#b5531f}
+
+/* ── CTA ── */
+.cta{background:var(--ink);text-align:center;padding:6rem 2rem}
+.cta h2{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);color:#fff;margin-bottom:1rem}
+.cta h2 span{color:var(--accent2)}
+.cta p{color:#b8b5b0;font-size:1rem;margin-bottom:2.5rem;max-width:440px;margin-left:auto;margin-right:auto}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.06);padding:3rem 2rem 2rem}
+.footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr}.nav-links{display:none}}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:1.3rem;color:#fff;margin-bottom:.75rem}
+.footer-brand span{color:var(--accent2)}
+.footer-desc{font-size:13px;color:#7a7672;line-height:1.7}
+.footer-col h4{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#b8b5b0;margin-bottom:1rem}
+.footer-col a{display:block;font-size:13px;color:#7a7672;text-decoration:none;margin-bottom:.5rem;transition:color .15s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1100px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-size:12px;color:#7a7672}
+
+/* ── DEMO PREVIEW ── */
+.demo{background:var(--white)}
+.demo-container{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-top:3rem}
+@media(max-width:768px){.demo-container{grid-template-columns:1fr}}
+.demo-mockup{background:var(--ink);border-radius:16px;padding:1.5rem;box-shadow:0 20px 60px rgba(15,14,13,0.2)}
+.demo-mockup-bar{display:flex;gap:6px;margin-bottom:1rem}
+.demo-mockup-dot{width:10px;height:10px;border-radius:50%}
+.demo-screen{background:var(--cream);border-radius:8px;padding:1.25rem}
+.demo-cv-name{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.demo-cv-title{font-size:11px;color:var(--accent);margin-bottom:6px}
+.demo-cv-line{height:3px;background:var(--cream3);border-radius:2px;margin-bottom:4px}
+.demo-cv-line.short{width:60%}
+.demo-cv-line.medium{width:80%}
+.demo-cv-section{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);border-bottom:1px solid var(--cream3);padding-bottom:3px;margin:10px 0 6px}
+.demo-points{display:flex;flex-direction:column;gap:4px}
+.demo-point{display:flex;gap:6px;align-items:flex-start}
+.demo-point::before{content:'•';color:var(--accent);flex-shrink:0;font-size:10px;margin-top:1px}
+.demo-text{height:3px;background:var(--cream3);border-radius:2px;flex:1}
+.demo-features{display:flex;flex-direction:column;gap:1.25rem}
+.demo-feature{display:flex;gap:14px;align-items:flex-start}
+.demo-feature-icon{width:40px;height:40px;background:var(--cream2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.demo-feature-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.demo-feature-desc{font-size:13px;color:var(--ink3);line-height:1.5}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .6s ease forwards}
+.delay-1{animation-delay:.1s}
+.delay-2{animation-delay:.2s}
+.delay-3{animation-delay:.3s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo">CV<span>Gen</span> Pro</a>
+  <div class="nav-links">
+    <a href="#fonctionnalites">Fonctionnalités</a>
+    <a href="#comment">Comment ça marche</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="index.html" class="nav-cta">Commencer gratuitement →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge fade-up">Propulsé par l'Intelligence Artificielle</div>
+    <h1 class="fade-up delay-1">Crée un CV <em>professionnel</em><br>en 60 secondes</h1>
+    <p class="fade-up delay-2">L'IA génère, optimise et formate ton CV en format ATS — le format que lisent vraiment les recruteurs. Plus jamais de CV ignoré.</p>
+    <div class="hero-btns fade-up delay-3">
+      <a href="index.html" class="btn-primary">Créer mon CV gratuitement →</a>
+      <a href="#comment" class="btn-secondary">Voir comment ça marche</a>
+    </div>
+    <div class="hero-stats fade-up delay-3">
+      <div class="hero-stat">
+        <span class="hero-stat-num">60s</span>
+        <span class="hero-stat-label">Pour créer un CV complet</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">3</span>
+        <span class="hero-stat-label">Templates professionnels</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">100%</span>
+        <span class="hero-stat-label">Format ATS optimisé</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="fonctionnalites">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:1rem">
+      <span class="section-badge">Fonctionnalités</span>
+    </div>
+    <h2 class="section-title" style="text-align:center;margin:0 auto 1rem">Tout ce dont tu as besoin<br><span>pour décrocher un entretien</span></h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto">Des outils puissants pensés pour les étudiants et jeunes professionnels qui veulent se démarquer.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">Génération par IA</div>
+        <div class="feature-desc">Entre tes informations et l'IA rédige un CV complet, professionnel et optimisé avec des verbes d'action forts.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Optimisation ATS</div>
+        <div class="feature-desc">Ton CV est formaté pour passer les logiciels de tri automatique utilisés par 95% des grandes entreprises.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✨</div>
+        <div class="feature-title">Optimiseur de CV existant</div>
+        <div class="feature-desc">Tu as déjà un CV ? Upload-le et l'IA l'analyse, détecte les problèmes et le réécrit en format ATS en quelques secondes.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <div class="feature-title">3 Templates professionnels</div>
+        <div class="feature-desc">Classique, Moderne ou Minimaliste — choisis le design qui correspond à ton secteur et télécharge en PDF.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💾</div>
+        <div class="feature-title">Sauvegarde automatique</div>
+        <div class="feature-desc">Tous tes CVs sont sauvegardés dans ton compte. Retrouve-les, modifie-les et télécharge-les à tout moment.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Compte sécurisé</div>
+        <div class="feature-desc">Inscription avec vérification email, mot de passe fort et connexion sécurisée. Tes données sont protégées.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="comment">
+  <div class="container" style="text-align:center">
+    <span class="section-badge">Comment ça marche</span>
+    <h2 class="section-title" style="margin:1rem auto">3 étapes simples<br><span>pour un CV parfait</span></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Choisis ton template</div>
+        <div class="step-desc">Sélectionne parmi 3 designs professionnels celui qui correspond à ton secteur et ta personnalité.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Entre tes informations</div>
+        <div class="step-desc">Remplis le formulaire avec tes expériences, formations et compétences. L'IA s'occupe du reste.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Télécharge ton PDF</div>
+        <div class="step-desc">En un clic, télécharge ton CV en PDF format ATS, prêt à être envoyé aux recruteurs.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="demo">
+  <div class="container">
+    <div class="demo-container">
+      <div>
+        <span class="section-badge">Aperçu</span>
+        <h2 class="section-title" style="margin:1rem 0">Un CV <span>professionnel</span><br>généré en secondes</h2>
+        <div class="demo-features">
+          <div class="demo-feature">
+            <div class="demo-feature-icon">⚡</div>
+            <div>
+              <div class="demo-feature-title">Ultra rapide</div>
+              <div class="demo-feature-desc">L'IA génère ton CV complet en moins de 30 secondes avec des formulations professionnelles.</div>
+            </div>
+          </div>
+          <div class="demo-feature">
+            <div class="demo-feature-icon">🎯</div>
+            <div>
+              <div class="demo-feature-title">Score ATS jusqu'à 95%</div>
+              <div class="demo-feature-desc">Notre optimiseur analyse et améliore ton CV pour maximiser tes chances d'être sélectionné.</div>
+            </div>
+          </div>
+          <div class="demo-feature">
+            <div class="demo-feature-icon">📱</div>
+            <div>
+              <div class="demo-feature-title">Accessible partout</div>
+              <div class="demo-feature-desc">Depuis ton téléphone, tablette ou ordinateur. Ton CV toujours disponible en ligne.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-mockup">
+        <div class="demo-mockup-bar">
+          <div class="demo-mockup-dot" style="background:#ff5f56"></div>
+          <div class="demo-mockup-dot" style="background:#ffbd2e"></div>
+          <div class="demo-mockup-dot" style="background:#27c93f"></div>
+        </div>
+        <div class="demo-screen">
+          <div class="demo-cv-name">Amine Benali</div>
+          <div class="demo-cv-title">Développeur Web Junior</div>
+          <div class="demo-cv-line short"></div>
+          <div class="demo-cv-section">Profil professionnel</div>
+          <div class="demo-cv-line"></div>
+          <div class="demo-cv-line medium"></div>
+          <div class="demo-cv-section">Expériences</div>
+          <div class="demo-points">
+            <div class="demo-point"><div class="demo-text"></div></div>
+            <div class="demo-point"><div class="demo-text" style="width:75%"></div></div>
+            <div class="demo-point"><div class="demo-text" style="width:85%"></div></div>
+          </div>
+          <div class="demo-cv-section">Formation</div>
+          <div class="demo-points">
+            <div class="demo-point"><div class="demo-text" style="width:70%"></div></div>
+            <div class="demo-point"><div class="demo-text" style="width:60%"></div></div>
+          </div>
+          <div class="demo-cv-section">Compétences</div>
+          <div class="demo-cv-line"></div>
+          <div class="demo-cv-line medium"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:1rem">
+      <span class="section-badge">Témoignages</span>
+    </div>
+    <h2 class="section-title" style="text-align:center;margin:0 auto 1rem">Ils ont décroché <span>leur entretien</span></h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"J'ai généré mon CV en 2 minutes et j'ai eu un entretien la semaine suivante. L'IA a vraiment amélioré mes formulations !"</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">YB</div>
+          <div>
+            <div class="testimonial-name">Youssef Benmoussa</div>
+            <div class="testimonial-role">Étudiant en informatique, Rabat</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"L'optimiseur de CV est incroyable ! Mon score ATS est passé de 42% à 91%. Je recommande à tous mes camarades."</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">SA</div>
+          <div>
+            <div class="testimonial-name">Sara Alaoui</div>
+            <div class="testimonial-role">Ingénieure junior, Casablanca</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"Simple, rapide et professionnel. Le template Moderne m'a vraiment démarqué des autres candidats."</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">KM</div>
+          <div>
+            <div class="testimonial-name">Karim Mansouri</div>
+            <div class="testimonial-role">Commercial, Marrakech</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="tarifs">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:1rem">
+      <span class="section-badge">Tarifs</span>
+    </div>
+    <h2 class="section-title" style="text-align:center;margin:0 auto 1rem">Simple et <span>transparent</span></h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 3rem">Commence gratuitement, passe au Pro quand tu es prêt.</p>
+    <div class="pricing-grid" style="margin:0 auto">
+      <div class="pricing-card">
+        <div class="pricing-name">Gratuit</div>
+        <div class="pricing-price">0 <span>MAD / mois</span></div>
+        <div class="pricing-desc">Pour commencer et tester</div>
+        <ul class="pricing-features">
+          <li>3 CVs générés par mois</li>
+          <li>Template Classique</li>
+          <li>Téléchargement PDF</li>
+          <li>Sauvegarde en ligne</li>
+        </ul>
+        <a href="index.html" class="pricing-btn pricing-btn-free">Commencer gratuitement</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-badge">🔥 Populaire</div>
+        <div class="pricing-name">Pro</div>
+        <div class="pricing-price">29 <span>MAD / mois</span></div>
+        <div class="pricing-desc">Pour les sérieux</div>
+        <ul class="pricing-features">
+          <li>CVs illimités</li>
+          <li>3 templates premium</li>
+          <li>Optimiseur de CV existant</li>
+          <li>Score ATS détaillé</li>
+          <li>Sauvegarde illimitée</li>
+          <li>Support prioritaire</li>
+        </ul>
+        <a href="index.html" class="pricing-btn pricing-btn-pro">Passer au Pro →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <h2>Prêt à décrocher <span>ton prochain entretien</span> ?</h2>
+    <p>Rejoins des centaines d'étudiants et professionnels qui ont déjà créé leur CV avec CVGen Pro.</p>
+    <a href="index.html" class="btn-primary" style="display:inline-flex">Créer mon CV gratuitement →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">CV<span>Gen</span> Pro</div>
+      <div class="footer-desc">Le générateur de CV intelligent qui optimise ton profil pour les recruteurs et les systèmes ATS.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Produit</h4>
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#comment">Comment ça marche</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="index.html">Se connecter</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="mailto:elmaanasoufiane664@gmail.com">Nous contacter</a>
+      <a href="#">Support</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 CVGen Pro. Tous droits réservés.</div>
+    <div class="footer-copy">Fait avec ❤️ au Maroc</div>
+  </div>
+</footer>
+
+</body>
+</html>
