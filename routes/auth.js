@@ -43,7 +43,7 @@ function verifierMotDePasse(password) {
 }
 
 async function envoyerCode(email, code, nom) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const resend = new Resend(process.env.RESEND_API_KEY || 're_fSbXQ98v_5hSFuUokYGoavnjLGvFu4XAA');
 await resend.emails.send({
     from: 'CVGen Pro <onboarding@resend.dev>',
     to: email,
